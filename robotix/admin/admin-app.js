@@ -99,7 +99,13 @@ app.factory('cmsVideosService', ['$http', function ($http) {
 		editVideo: {}, //video data
 		selectedVideo: "", //id of video used to determine where to attach video_editor element
 		video_editor: {}, //html form editor element
-		getVideosContent: function () {
+		getYouTubeAPIKey: function() {
+      return $http({
+        method: 'GET',
+				url: 'youTubeAPIKey.json'
+      });
+    ),
+    getVideosContent: function () {
 			return $http({
 				method: 'GET',
 				url: '../user/videos/videos.php'
@@ -569,7 +575,15 @@ app.controller('videoTabsController', ['$scope', function($scope) {
 }]);
 
 app.controller('ytPlaylistController', ['$scope', 'cmsVideosService', function($scope, cmsVideosService) {
-	//determines visibility of playlist elements
+  
+  cmsVideosService.getYouTubeAPIKey()
+  .then( function(result) {
+    $scope.youTubeAPIKey = result.KEY;
+  }, function() {
+    alert("Unable to retrieve API Key, please refresh page.")
+  });
+  
+  //determines visibility of playlist elements
 	$scope.playlistLoaded = false;
 	
 	//determines visibility of videos in playlist
@@ -585,10 +599,10 @@ app.controller('ytPlaylistController', ['$scope', 'cmsVideosService', function($
 	// Retrieves playlist and videos details from You Tube
 	$scope.loadPlaylist = function() {
 		//API request for playlist items
-		var requestItems = "https://www.googleapis.com/youtube/v3/playlistItems?part="+$scope.requestOptions.part+"&maxResults="+$scope.requestOptions.maxResults+"&playlistId="+$scope.requestOptions.playlistId+"&fields=items(id%2Ckind%2Csnippet(description%2CresourceId%2FvideoId%2Ctitle))&key=AIzaSyAie6ZgbO9PXLfzr999pqyk3rGuApM8Azs";
+		var requestItems = "https://www.googleapis.com/youtube/v3/playlistItems?part="+$scope.requestOptions.part+"&maxResults="+$scope.requestOptions.maxResults+"&playlistId="+$scope.requestOptions.playlistId+"&fields=items(id%2Ckind%2Csnippet(description%2CresourceId%2FvideoId%2Ctitle))&key="+$scope.youTubeAPIKey;
 		
 		//API request for playlist details
-		var requestPlaylist = "https://www.googleapis.com/youtube/v3/playlists?part="+$scope.requestOptions.part+"&id="+$scope.requestOptions.playlistId+"&fields=items(id%2Csnippet(description%2Ctitle))&key=AIzaSyAie6ZgbO9PXLfzr999pqyk3rGuApM8Azs";
+		var requestPlaylist = "https://www.googleapis.com/youtube/v3/playlists?part="+$scope.requestOptions.part+"&id="+$scope.requestOptions.playlistId+"&fields=items(id%2Csnippet(description%2Ctitle))&key="+$scope.youTubeAPIKey;
 		
 		//request playlist details
 		cmsVideosService.getYtContent(requestPlaylist)
@@ -648,7 +662,14 @@ app.controller('ytPlaylistController', ['$scope', 'cmsVideosService', function($
 }]);
 
 app.controller('ytVideoController', ['$scope', 'cmsVideosService', function($scope, cmsVideosService) {
-
+  
+  cmsVideosService.getYouTubeAPIKey()
+  .then( function(result) {
+    $scope.youTubeAPIKey = result.KEY;
+  }, function() {
+    alert("Unable to retrieve API Key, please refresh page.")
+  });
+  
 	//determines visibility of single video
 	$scope.videoLoaded = false;
 	
@@ -661,7 +682,7 @@ app.controller('ytVideoController', ['$scope', 'cmsVideosService', function($sco
 	
 	// Retrieves single video details from You Tube
 	$scope.loadVideo = function() {
-		var requestVideo = "https://www.googleapis.com/youtube/v3/videos?part="+$scope.requestOptions.part+"&id="+$scope.requestOptions.videoId+"&fields=items(id%2Csnippet(description%2Ctitle))&key=AIzaSyAie6ZgbO9PXLfzr999pqyk3rGuApM8Azs";
+		var requestVideo = "https://www.googleapis.com/youtube/v3/videos?part="+$scope.requestOptions.part+"&id="+$scope.requestOptions.videoId+"&fields=items(id%2Csnippet(description%2Ctitle))&key="+$scope.youTubeAPIKey;
 		
 		cmsVideosService.getYtContent(requestVideo)
 			.then(function(result) {
