@@ -6,12 +6,10 @@ This is the entire codebase for [Robotix Education](https://robotix.com.au), an 
 
 This is an edited copy of the live website with omitted API keys and changed passwords.
 
-It features YouTube API interaction with files to download. Has an admin section with a custom made CMS.
-
-## Requirements
-
-* Build a CodePen.io app that is functionally similar to [this] ()
-* **User Story:** 
+### Stack
+* Angular 1.4.2
+* PHP Version: 5.6.30
+ features YouTube API interaction with files to download. Has an admin section with a custom made CMS.
 
 ## Features
 
@@ -20,9 +18,18 @@ It features YouTube API interaction with files to download. Has an admin section
 
 ![###](/###.png "###")
 
-## APIs / Libraries used
+## APIs
 
-* jQuery 3.2.1
+* YouTube API
+* PayPal API
+
+## Libraries
+
+* Angular 1.4.2
+* Angular Routes 1.4.2
+* ngFileUpload by [danialfarid](https://github.com/danialfarid/ng-file-upload)
+* jQuery 3.1.1
+* Bootstrap 3.3.7 JS
 * Bootstrap 3.3.7 CSS
 
 ## Licence 
