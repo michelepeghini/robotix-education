@@ -6,3 +6,6 @@
 
 # udemy API key
 /robotix/user/courses/udemy_client_data.php
+
+# htaccess for server redirect
+/robotix/admin/.htaccess
