@@ -1,0 +1,61 @@
+<!-- USER INDEX VIEW -->
+
+<div>
+	<section id="intro">
+		<div class="description">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-10 intro_blurb pull-right">
+						<h1><em>Learn by doing</em></h1>
+						<h1>120 Educational videos and counting in Arduino, Scratch and Python.</h1>
+						<h1>Downloadable program files and schematics</h1>
+					</div>	
+					<div class="col-xs-8">
+						<a ng-href="#/videos"><button class="btn btn-default green_bg pull-right"><h2 style="margin-bottom:0;">Get Started</h2></button></a>
+					</div>
+				</div>				
+			</div>
+		</div>
+	</section>
+
+	<section id="resources" class="container info" ng-controller="homeElementsController">
+		<div class="row">
+			<div ng-repeat="e in homeElements">
+				<aside class="col-xs-12 col-md-4 home_element">
+					<a ng-href="#/{{e.link}}">
+						<div class="col-md-12 col-sm-6 col-xs-12">
+							<img class="img-responsive element_image" ng-src="{{'images/home/'+e.id+'/'+e.image}}" alt="{{e.name}}" title="{{e.name}}" />
+						</div>
+						<div class="col-md-12 col-sm-6 col-xs-12">
+							<h3>{{e.name}}</h3>
+							<p>{{e.description}}</p>
+						</div>
+					</a>
+				</aside>
+			</div>
+		</div>
+	</section>
+	
+	<section id="banner_video">
+		<div class="container">
+			<div class="embed-responsive embed-responsive-16by9">
+				<iframe class="embed-responsive-item" id="ytplayer" type="text/html" width="720" height="405" src="https://www.youtube.com/embed/qw_4tnefN_s?controls=2?modestbranding=1&rel=0&color=white"frameborder="0" allowfullscreen></iframe>
+			</div>
+		</div>
+	</section>
+	
+	<!--<section id="latest">
+		<div class="container heading">
+			<h1>Latest Videos</h1>
+		</div>
+		<div>
+			<div class="slider_body" ng-controller="sliderController">
+				<a href="" role="button" class="slider_control slider_prev" ng-click="slidePrev()"><span class="glyphicon glyphicon-chevron-left"> </span></a>
+						<div class="slider_sector" ng-repeat="s in slides ">
+							<a ng-href="#/videos/{{s.id}}"><img class="slider_image img img-responsive" ng-src="{{'http://img.youtube.com/vi/'+s.yt_id+'/0.jpg'}}" alt="{{s.name}}" title="{{s.name}}" /></a>
+						</div>
+				<a href="" role="button" class="slider_control slider_next" ng-click="slideNext()"><span class="glyphicon glyphicon-chevron-right"></span></a>
+			</div>
+		</div>
+	</section>-->
+</div>

@@ -1,0 +1,57 @@
+<!-- UDEMY VIEW -->
+
+<div class="container udemy" ng-controller="udemyCodesController">
+	<div class="heading">
+		<h2>Redeem Code</h2>
+	</div>
+	<section id="udemy_form" class="software_wrapper" ng-hide="udemyLink || codeRemoved">
+		<form name="udemyCodeForm" novalidate>
+			<div class="row">
+				<div class="col-xs-12 text-center">
+					<h3>Use your code to get the "COURSE_NAME" for free! </h3>
+				</div>
+				<div class="col-xs-12 text-center">
+					<input type="text" name="code" ng-class="udemyCodeForm.code.$valid || udemyCodeForm.code.$pristine ? 'valid_field' : 'invalid_field'" ng-model="request.code" ng-disabled="submitting" placeholder="Your code here" maxlength="8" pattern="[a-zA-Z0-9]{8}" required>
+				</div>
+				<div class="col-xs-12 text-center">
+					<input id="udemy_code_btn" type="submit" class="btn btn-default green_bg" value="Generate Link" ng-disabled="udemyCodeForm.$invalid" ng-click="getLink()"/>
+				</div>
+			</div>	
+		</form>
+	</section>
+	<section id="udemy_link" class="software_wrapper" ng-show="udemyLink && !codeRemoved">
+		<div class="row">
+			<div class="col-xs-12 text-center">
+				<h3 class="green">Valid Code!</h3>
+			</div>
+			<div class="col-xs-12">
+				<p>Now you can follow the link to Udemy below and get your FREE course!</p>
+			</div>
+			<div class="col-xs-12">
+				<p>NOTE: Once you open the link below, your code will be removed from our database and it will expire on Udemy after 30 minutes.</p>
+				<p class="red"> Make sure you subscribe to the course immediately!  </p>
+			</div>
+			<div class="col-xs-12 text-center">
+				<a href="{{udemyLink}}" target="_blank"><input id="udemy_link_btn" type="submit" class="btn btn-default green_bg" value="Claim Course" ng-click="removeCode()"/></a>
+			</div>
+		</div>	
+	</section>
+	<section id="udemy_code_removed"class="software_wrapper" ng-show="codeRemoved">
+		<div class="row">
+			<div class="col-xs-12 text-center">
+				<h3 class="green">All done!</h3>
+			</div>
+			<div class="col-xs-12 text-center">
+				<p>Your Code has been redeemed.</p>
+			</div>
+			<div class="col-xs-12 text-center">
+				<p class="red"> Make sure you subscribe to the course immediately! </p>
+			</div>
+			<div class="col-xs-12 text-center">
+				<a href="{{udemyLink}}" target="_blank"><input id="udemy_link_btn" type="submit" class="btn btn-default green_bg" value="Claim Course"/></a>
+			</div>
+		</div>	
+	</section>
+</div>
+
+

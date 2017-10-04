@@ -1,0 +1,73 @@
+<!-- VIDEOS PAGE VIEW -->
+
+<div class="container" ng-controller="videosController">
+	<!-- latest videos -->
+	<section>
+		<h2>Latest Videos</h2>
+		<div class="slider_body" ng-controller="sliderController">
+			<a href="" role="button" class="slider_control slider_prev" ng-click="slidePrev()"><span class="glyphicon glyphicon-chevron-left"> </span></a>
+					<div class="slider_sector" ng-repeat="s in slides ">
+						<!--<div class="slider_caption">
+							<h4 >{{s.name}}</h4>
+						</div>-->
+						<a ng-href="#/videos/{{s.id}}"><img class="slider_image img img-responsive" ng-src="{{'https://img.youtube.com/vi/'+s.yt_id+'/0.jpg'}}" alt="{{s.name}}" title="{{s.name}}" /></a>
+					</div>
+			<a href="" role="button" class="slider_control slider_next" ng-click="slideNext()"><span class="glyphicon glyphicon-chevron-right"></span></a>
+		</div>
+	</section>
+	<!-- list of playlists -->
+	<section id="listOfPlaylists" ng-controller="listOfPlaylistsController">
+		<div class="list_wrapper">
+			<h2 role="button" ng-click="togglePlaylists()">Playlists  <span class="glyphicon" ng-class="expanded? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'"></span></h2>
+			<div ng-show="expanded">
+				<aside ng-repeat="p in playlists">
+					<a ng-href="#/playlist_{{p.id}}"><h3>{{p.name}}</h3></a>
+				</aside>
+			</div>
+		</div>
+	</section>
+	<!-- list of vidoes -->
+	<section>
+		<h2>Videos</h2>
+		<div class="video_filter">
+			<div>
+				<h4><span class="glyphicon glyphicon-filter"></span>  Filter</h4>
+			</div>
+			<div class="row">
+				<div class="col-md-4 col-xs-12 row">
+					<label class="col-md-4 col-xs-12" for="playlists">Playlists: </label>
+					<select class="col-md-8 col-xs-12" name="playlists" ng-model="playlistSelector" ng-options="pl.name for pl in playlists track by pl.id">
+					<option value="">Select playlist...</option>
+					</select>
+				</div>
+				<div class="col-md-4 col-xs-12 row">
+					<label class="col-md-4 col-xs-12" for="search">Search:</label>
+					<input class="col-md-8 col-xs-12" type="text" ng-model="nameSearch">
+				</div>
+				<div class="col-md-4 col-xs-12 row">
+					<label class="col-md-4 col-xs-12" for="kit">Kit: </label>
+					<select class="col-md-8 col-xs-12" name="kit" ng-model="kitSelector" ng-options="k.name for k in kitsList track by k.id">
+						    <option value="">Select kit...</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<aside class="col-md-4 col-sm-6 col-xs-12" ng-repeat="v in videos | filter: nameSearch | filter: {in_playlist: playlistSelector.id} | filter: {in_kit: kitSelector.id}">
+				
+				<div class="element_panel">
+					<h3>{{v.name}}</h3>
+					<a ng-href="#/videos/{{v.id}}">
+						<img class="img-responsive element_image" ng-src="{{'https://img.youtube.com/vi/' + v.yt_id + '/0.jpg'}}" alt="{{v.name}}" title="{{v.name}}" />
+					</a>
+					<div class="video_pills row">		
+						<p class="col-xs-6"><span ng-class="{'green': v.manual, 'grey': !v.manual}" class="glyphicon glyphicon-file"></span> Manual</p>
+						<p class="col-xs-6" ><span ng-class="{'green': v.code, 'grey': !v.code}" class="glyphicon glyphicon-file"></span> Code</p>
+					</div>
+				</div>
+			</aside>
+
+		</div>
+	</section>
+	
+</div>

@@ -1,0 +1,46 @@
+<!-- SIGN UP DIRECTIVE -->
+<div id="sign_up" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="redirect()" data-dismiss="modal" aria-label="Close">&times;</button>
+				<h2 class="modal-title" >Sign Up</h2>
+			</div>
+			<div class="modal-body">
+				<form name="signupForm" novalidate>
+					<fieldset ng-disabled="isSaving">
+						<div class="form-group row">
+							<label for="email" class="col-sm-3 col-form-label">Email* :</label>
+							<div class="col-sm-9">
+								<input name="email" ng-model="user.email" type="email" size="30" class="form-control" pattern="[a-z0-9@._%+-]{5,40}"  placeholder="youremail@example.com" ng-class="signupForm.email.$valid || signupForm.email.$pristine ? 'valid_field' : 'invalid_field'" maxLength="40" required />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="password" class="col-sm-3 col-form-label">Password* :</label>
+							<div class="col-sm-9">
+								<input name="password" ng-model="user.password" size="30" type="password" class="form-control" pattern="[A-Za-z0-9@._%+-]{1,20}" placeholder="Your Password"required ng-class="signupForm.password.$valid || signupForm.password.$pristine ? 'valid_field' : 'invalid_field'" maxLength="20" required/>
+								<span ng-show="signupForm.password.$dirty && signupForm.password.$invalid-pattern" class="form_info">Max 20 chars, allowed symbols:@._%+- </span>
+							</div>
+						</div>
+						<div class="form-group row" ng-show="signupForm.password.$dirty">
+							<label for="confirm_password" class="col-sm-3 col-form-label">Confirm* :</label>
+							<div class="col-sm-9">
+								<input name="confirm_password" ng-model="confirm_password" size="30" type="password" class="form-control" pattern="[A-Za-z0-9@._%+-]{1,20}" placeholder="Retype Your password" ng-class="passwordMatch()" required/>
+								<span ng-show="passwordMatch()!=='valid_field'" class="form_info" >Passwords do not match!</span>
+							</div>
+						</div>
+						<p class="red">{{errorMessage}}</p>
+						<span class="form_info">* = Required fields</span>
+					</fieldset>
+					<div>
+						<input type="submit" class="btn btn-default" value="Sign Up" ng-disabled="signupForm.$invalid || user.password !== confirm_password" ng-click="signUp()" />
+						<span class="sign_up_lead">Don't worry, it's <span class="green">FREE</span></span>
+					</div>
+				</form>
+				<div class="switch_form">
+					<p>Already have an account? <a href="" class="account_form_link" role="button" ng-click="showLogIn()">Log In</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

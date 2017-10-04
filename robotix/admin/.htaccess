@@ -1,0 +1,6 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^admin\.robotix\.com\.au$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.admin\.robotix\.com\.au$
+RewriteRule ^/?$ "http\:\/\/robotix\.com\.au\/robotix\/admin" [R=301,L]
+

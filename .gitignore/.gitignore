@@ -1,8 +1,8 @@
 #asset folder, contains files such as manuals
-\assets
+/assets
 
 #images folder
-\images
+/images
 
 # udemy API key
-\robotix\user\courses\udemy_client_data.php
+/robotix/user/courses/udemy_client_data.php

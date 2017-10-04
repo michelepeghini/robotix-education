@@ -1,0 +1,37 @@
+<!-- LOGIN DIRECTIVE -->
+<div id="log_in" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="redirect()" data-dismiss="modal" aria-label="Close">&times;</button>
+				<h2 class="modal-title">Log In</h2>
+			</div>
+			<div class="modal-body">
+				<form name="loginForm" novalidate>
+					<fieldset ng-disabled="isSaving">
+						<div class="form-group row">
+							<label for="email" class="col-sm-3 col-form-label">Email* :</label>
+							<div class="col-sm-9">
+								<input name="email" ng-model="user.email" type="email" size="30" class="form-control" pattern="[a-z0-9@._%+-]{5,40}"  placeholder="youremail@example.com" ng-class="loginForm.email.$valid || loginForm.email.$pristine ? 'valid_field' : 'invalid_field'" maxLength="40" required />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="password" class="col-sm-3 col-form-label">Password* :</label>
+							<div class="col-sm-9">
+								<input name="password" ng-model="user.password" size="30" type="password" class="form-control" pattern="[A-Za-z0-9@._%+-]{1,20}" placeholder="Your Password"required ng-class="loginForm.password.$valid || loginForm.password.$pristine ? 'valid_field' : 'invalid_field'" maxLength="40" required/>
+							</div>
+						</div>
+						<p class="red">{{errorMessage}}</p>
+						<span class="form_info">* = Required fields</span>
+					</fieldset>
+					<div>
+						<input type="submit" class="btn btn-default" value="Log In" ng-disabled="loginForm.$invalid" ng-click="logIn()" />
+					</div>
+				</form>
+				<div class="switch_form">
+					<p>Not registered yet? <a href="" class="account_form_link" role="button" ng-click="showSignUp()">Sign Up</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

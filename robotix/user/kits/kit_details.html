@@ -1,0 +1,53 @@
+<!-- KIT DETAILS VIEW -->
+
+<div class="container" id="{{kit.id}}" ng-controller="kitDetailsController as detailsCtrl" >	
+	<div class="heading">
+		<h2>{{kit.name}}</h2>		
+	</div>
+	<div class="row">
+		<div class="col-sm-6 col-xs-12">
+			<img class="img img-responsive" ng-src="{{'images/kits/'+kit.id+'/'+kit.image}}"  alt="{{kit.name}}" title="{{kit.name}}" />
+		</div>
+		<div class="col-md-6 col-xs-12">
+			<p>{{kit.description}}</p> 
+			<div ng-class="{'not_avail': !isAvailable(kit.qty)}"><p>${{kit.price}} AUD</p></div>
+			<!--<div class="" ng-class="{'not_avail': !isAvailable(kit.qty)}"><p>Availability: {{isAvailable(kit.qty)? 'YES' : 'NO'}}</p></div>
+			<div ng-show="isAvailable(kit.qty)"><a ng-href="" ng-click="" ><p>Add to Cart</p></a></div>
+			<div ng-hide="isAvailable(kit.qty)"><p>Out of Stock</p></div>-->
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="ng-pristine ng-valid">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="{{kit.paypal_id}}">
+			<input type="image" src="https://www.paypalobjects.com/webstatic/mktg/logo/PP_AcceptanceMarkTray-NoDiscover_243x40.png" alt="Buy now with PayPal">
+		</form>
+		</div>
+	</div>
+	<div class="video_tabs" ng-controller="tabController as tabCtrl">
+		<div class="row tabs_header">
+			<ul>
+				<li class="float-left" id="tab_1" ng-click="setActiveTab(1)"><h4>Components</h4></li>
+				<li class="float-left" id="tab_2" ng-click="setActiveTab(2)"><h4>What you can build</h4></li>
+
+			</ul>
+		</div>
+		<div class="tab_body clearfix">
+			<!-- Components tab -->
+			<div class="tab_element row" ng-show="isActive(1)">
+				<ul>
+					<li class="col-xs-12 col-sm-4" ng-repeat="c in componentsInKit">{{c.component_qty}} X {{c.name}}</li>
+				</ul>
+			</div>
+			<!-- Videos tab -->
+			<div class="tab_element row" ng-show="isActive(2)">
+				<div class="col-sm-4 col-xs-12 element_panel" ng-repeat="v in videosForKit">
+					<h3>{{v.name}}</h3>
+					<a ng-href="{{'#/videos/' + v.id}}">
+						<img class="img-responsive element_image" ng-src="{{'http://img.youtube.com/vi/'+v.yt_id+'/0.jpg'}}" alt="{{v.name}}" title="{{v.name}}" />
+					</a>
+					<p></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+

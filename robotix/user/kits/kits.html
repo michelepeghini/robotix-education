@@ -1,0 +1,25 @@
+<!-- KITS VIEW -->
+
+<div class="container" ng-controller="kitsController as kitsCtrl">  
+	<div class="heading">
+		<h2>Kits</h2>	
+	</div>
+	<div class="row">
+		<aside class="col-md-4 col-sm-6 col-xs-12" ng-repeat="k in kits">
+			<div class="element_panel">
+				<h3>{{k.name}}</h3>
+				<a ng-href="#/kits/{{k.id}}">
+					<img class="img-responsive center-block" ng-src="{{'images/kits/'+k.id+'/'+k.image}}" alt="{{k.name}}" title="{{k.name}}" />
+				</a>
+				<div class="kit_pills">		
+					<ul>
+						<li class="resource" ng-class="{'not_available': !isAvailable(k.qty)}"><h3>${{k.price}} AUD</h3></li>
+						<!--<li class="resource" ng-show="isAvailable(k.qty)"><a ng-href="" ng-click="" ><p>Add to Cart</p></a></li>
+						<li class="resource" ng-hide="isAvailable(k.qty)"><p>Out of Stock</p></li>-->
+					</ul>
+				</div>
+			</div>
+		</aside>
+	</div>
+</div> 
+

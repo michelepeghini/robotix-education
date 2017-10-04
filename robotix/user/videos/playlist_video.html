@@ -1,0 +1,47 @@
+<!-- VIDEO DETAILS VIEW -->
+
+<div class="container" ng-controller="videoDetailsController as vdCtrl">	
+	<div id="{{video.id}}">	
+		<div>
+			<h2>{{video.name}}</h2>
+			<!-- YOU TUBE LINK, TRUSTED SOURCE-->
+			<div class="embed-responsive embed-responsive-16by9" ng-bind-html="trustedVideo">
+			</div>
+			<div class="video_tabs" ng-controller="tabController as tabCtrl">
+				<div class="row tabs_header">
+					<ul>
+						<li class="float-left" id="tab_1" ng-click="setActiveTab(1)"><h4>Description</h4></li>
+						<li class="float-left" id="tab_2" ng-click="setActiveTab(2)"><h4>Files</h4></li>
+						<li class="float-left" id="tab_3" ng-click="setActiveTab(3)"><h4>Kits</h4></li>
+					</ul>
+				</div>
+				<div class="tab_body clearfix">
+					<!-- Desription tab -->
+					<div class="tab_element" ng-show="isActive(1)">
+						<p>{{video.description}}</p>
+					</div>
+					<!-- Files tab -->
+					<div class="tab_element" ng-show="isActive(2)">
+						<ul>
+							<li ng-if="video.manual"><a download="{{fileName(video.name, video.manual)}}" ng-href="{{'assets/video/' + video.id + '/' + video.manual}}"><span class="glyphicon glyphicon-file green"></span> Manual</a></li>
+							<li ng-hide="video.manual">No Manual</li>
+							<li ng-if="video.code"><a download="{{fileName(video.name, video.code)}}" ng-href="{{'assets/video/' + video.id + '/' + video.code}}" ><span class="glyphicon glyphicon-file green"></span> Code</a></li>
+							<li ng-hide="video.code">No Code</li>
+						</ul>
+					</div>
+					<!-- kits tab -->
+					<div class="tab_element" ng-show="isActive(3)">
+						<aside class="col-sm-4 col-xs-12" ng-repeat="kit in kitsForVideo">
+							<div class="element_panel">
+								<h3>{{kit.name}}</h3>
+								<a ng-href="#/kits/{{kit.id}}">
+									<img class="img-responsive element_image" ng-src="{{'images/kits/'+kit.id+'/'+kit.image}}" alt="{{kit.name}}" title="{{kit.name}}" />
+								</a>
+							</div>
+						</aside>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>

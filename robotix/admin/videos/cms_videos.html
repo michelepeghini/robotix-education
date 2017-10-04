@@ -1,0 +1,440 @@
+<!-- ADMIN VIDEOS VIEW -->
+
+<!-- TABS CONTROLLER -->
+<div class="container" ng-controller="videoTabsController">
+	<div class="video_tabs">
+		<div class="row tabs_header">
+			<ul>
+				<li id="tab_1" class="float-left" ng-click="setActiveTab(1)"><h4>You Tube API</h4></li>
+				<li id="tab_2" class="float-left" ng-click="setActiveTab(2)"><h4>Videos</h4></li>
+				<li id="tab_3" class="float-left" ng-click="setActiveTab(3)"><h4>Playlists</h4></li>
+				<li id="tab_3" class="float-left" ng-click="setActiveTab(4)"><h4>Courses</h4></li>
+			</ul>
+		</div>
+		<div class="tab_body clearfix">
+
+			<!-- You Tube API tab -->
+			<div class=" tab_element" ng-show="isActive(1)">
+
+				<div ng-controller="ytPlaylistController">
+					<!-- PLAYLIST LOADER --> 
+					<div id="yt_pl_loader" class="video_filter">
+						<h3>You Tube API - Playlist loader</h3>
+						<form name="playlist_request">
+							<fieldset> 
+								<div class="form-group row">
+									<label for="playlist_id" class="col-sm-2 col-form-label">Playlist ID: </label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="playlist_id" ng-model="requestOptions.playlistId" size="50" placeholder="Paste playlist id from You Tube here..." required>
+									</div>
+								</div>
+								<button class="btn btn-default white_bg pull-right" ng-click="loadPlaylist()" ng-disabled="playlist_request.$invalid"><h3 >LOAD</h3></button>
+							</fieldset>
+						</form>
+					</div>
+
+					<!-- YOU TUBE PLAYLIST AND VIDEOS DATA-->
+					<div id="yt_results" class="cms_results" ng-show="playlistLoaded">
+						<form name="yt_results" novalidate>
+							<!-- PLAYLIST DATA-->
+							<h2>Playlist data:</h2>
+							<fieldset> 
+								<div class="form-group row">
+									<label for="pl_name" class="col-sm-2 col-form-label">Name:</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="pl_name" size="50" ng-model="playlist.name" maxLength="100" required/>	
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="pl_id" class="col-sm-2 col-form-label">Id:</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="pl_id" size="50" ng-model="playlist.yt_pl_id" readonly>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="pl_description" class="col-sm-2 col-form-label">Description:</label>
+									<div class="col-sm-10">
+										<textarea class="form-control" rows="4" cols="50" name="pl_description" ng-model="playlist.description" maxLength="400" >
+										</textarea>
+									</div>
+								</div>
+							</fieldset>
+							<hr>		
+							<!-- VIDEOS DATA-->
+							<h2>Videos data:</h2>
+							<fieldset ng-repeat="v in videos track by $index">
+								<div class="form-group row">
+									<label ng-for="v_name_{{$index}}" class="col-sm-2 col-form-label">Name:</label>
+									<div class="col-sm-8">
+										<input type="text" ng-name="v_name_{{$index}}" class="form-control" ng-model="v.name" size="50" maxLength="100" required>
+									</div>
+									<div class="col-sm-2">
+										<button class="btn btn-danger element_btn" ng-click="removeVideo($index)">&times;</button>	
+									</div>
+								</div>
+								<div class="form-group row">
+									<label ng-for="v_yt_id_{{$index}}" class="col-sm-2 col-form-label">Id:</label>
+									<div class="col-sm-10">
+										<input type="text" ng-name="v_yt_id_{{$index}}" class="form-control" ng-model="v.yt_id" size="50" readonly>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label ng-for="v_description_{{$index}}" class="col-sm-2 col-form-label">Description:</label>
+									<div class="col-sm-10">
+										<textarea ng-name="v_description_{{$index}}" class="form-control" rows="4" cols="50" ng-model="v.description" maxLength="1000">
+									</textarea>
+									</div>	
+								</div>
+								<hr class="partial_separator">
+							</fieldset>
+							<button class="btn btn-default element_btn green_bg" ng-click="saveYtVideos()" ng-disabled="yt_results.$invalid"><h3>SAVE</h3></button>
+						</form>
+					</div>
+				</div>
+
+				<div ng-controller="ytVideoController">
+					<!-- SINGLE VIDEO LOADER-->
+					<div id="yt_video_loader" class="video_filter">
+						<h3>You Tube API - Video loader</h3>
+						<form name="video_request">
+							<fieldset> 
+								<div class="form-group row">
+									<label for="video_id" class="col-sm-2 col-form-label">Video ID: </label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="video_id" ng-model="requestOptions.videoId" size="50" placeholder="Paste video id from You Tube here..." required>
+									</div>
+								</div>
+								<button class="btn btn-default white_bg pull-right" ng-click="loadVideo()" ng-disabled="video_request.$invalid"><h3>LOAD</h3></button>
+							</fieldset>
+						</form>
+					</div>
+
+					<!-- SINGLE VIDEO DATA-->
+					<div id="yt_v_results" class="cms_results" ng-show="videoLoaded">
+						<h3>You Tube API - Single Video data:</h3>
+						<form name="video_result">
+							<fieldset>
+								<div class="form-group row">
+									<label for="v_name" class="col-sm-2 col-form-label">Name:</label>
+									<div class="col-sm-8">
+										<input type="text" name="v_name" class="form-control" ng-model="video.name" size="50"  maxLength="100" required>
+									</div>
+									<div class="col-sm-2">
+										<button class="btn btn-danger element_btn" ng-click="removeSingleVideo()">&times;</button>	
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="v_yt_id" class="col-sm-2 col-form-label">Id:</label>
+									<div class="col-sm-10">
+										<input type="text" name="v_yt_id" class="form-control" ng-model="video.yt_id" size="50" readonly>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="v_description" class="col-sm-2 col-form-label">Description:</label>
+									<div class="col-sm-10">
+										<textarea name="v_description" class="form-control" rows="4" cols="50" ng-model="video.description" maxLength="1000" required>
+									</textarea>
+									</div>
+								</div>
+							</fieldset>
+							<button class="btn btn-default element_btn green_bg" ng-click="saveYtVideo()" ng-disabled="video_result.$invalid"><h3>SAVE</h3></button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<!-- Videos tab -->
+			<div class="tab_element" ng-show="isActive(2)">
+				<div id="cmsVideos" ng-controller="cmsVideosController">
+
+					<!-- FILTER FOR VIDEOS -->
+					<div class="video_filter">
+						<div class="row">
+							<div>
+								<h4><span class="glyphicon glyphicon-filter"></span>Filter <span class="glyphicon glyphicon-chevron-right"></span></h4>
+							</div>
+							<div class="col-md-4 col-xs-12">
+								<label for="playlists">Playlists: </label>
+								<select name="playlists" ng-model="playlistSelector" ng-options="pl.name for pl in playlists track by pl.id">
+								<option value="">Select playlist...</option>
+								</select>
+							</div>
+							<div class="col-md-4 col-xs-12">
+								<label for="search">Search:</label>
+								<input type="text" ng-model="nameSearch">
+
+							</div>
+							<div class="col-md-4 col-xs-12">
+								<label for="kit">Kit: </label>
+								<select name="kit" ng-model="kitSelector" ng-options="k.name for k in kitsList track by k.id">
+										<option value="">Select kit...</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- LIST OF VIDEOS -->
+					<h3>List of Videos</h3>
+					<section class="cms_results">
+						<aside id="cmsVideo_{{v.id}}" ng-repeat="v in videos | filter: nameSearch | filter: {in_playlist: playlistSelector.id} | filter: {in_kit: kitSelector.id}">
+							<div class="row cms_element">
+								<div class="edit_link">
+									<a ng-href="" role="button" ng-click="selectVideo(v.id)">
+										<div class="col-sm-2">
+											<img class="element_image" ng-src="{{'http://img.youtube.com/vi/' + v.yt_id + '/0.jpg'}}" alt="{{v.name}}" title="{{v.name}}" height="80"/>
+										</div>
+										<div class="col-sm-8">
+												<h4>{{v.name}}</h4>
+										</div>
+									</a>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-danger element_btn" ng-click="removeVideo(v.id)">&times;</button>
+								</div>
+							</div>
+							<hr class="partial_separator">
+						</aside>
+					</section>
+				</div>
+
+				<!-- EDITOR FOR SELECTED VIDEO -->
+				<div id="video_editor" ng-controller="videoEditController">
+					<form name="video_editor" novalidate enctype="multipart/form-data">
+						<fieldset>
+							<div class="form-group row">
+								<label ng-for="v_name" class="col-sm-2 col-form-label">Name:</label>
+								<div class="col-sm-10">
+									<input type="text" ng-name="v_name" class="form-control" ng-model="editVideo.name" size="50" maxLength="100" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label ng-for="v_description" class="col-sm-2 col-form-label">Description:</label>
+								<div class="col-sm-10">
+									<textarea ng-name="v_description" class="form-control" rows="4" cols="50" ng-model="editVideo.description" maxLength="1000" required>
+								</textarea>
+								</div>	
+							</div>
+							<div class="form-group row">
+								<label for="v_manual" class="col-sm-2 col-form-label">Manual:</label>
+								<div class="element_file col-sm-2" ng-class="{'overwrite_file': editVideo.manual && manualFile, 'new_file': !editVideo.manual && manualFile, 'delete_file': fileRemove.manual}">
+									<span class="glyphicon glyphicon-plus-sign darkgreen" ng-show="!editVideo.manual && manualFile" style="margin-right:-5px"></span><!-- video has no file yet -->
+									<span class="glyphicon glyphicon-file" ng-class="editVideo.manual ? 'darkgreen' : 'grey'"></span><!-- file present or not -->
+									<span class="glyphicon glyphicon-remove orange" role="button" ng-show="fileRemove.manual" ng-click="toggleRemove('manual')"></span><!-- undo remove file from video -->
+									<span class="glyphicon glyphicon-remove red" role="button" ng-show="manualFile" ng-click="clearUpload('#manual')"></span><!-- undo file upload selection -->
+								</div>
+								<div class="col-sm-7">
+									<input type="file" ng-model="manualFile" name="v_manual" id="manual" ngf-select accept=".pdf" size="30">
+								</div>
+								<div class="col-sm-1">
+									<button class="btn btn-danger element_btn" ng-show="editVideo.manual && !manualFile && !fileRemove.manual" ng-click="toggleRemove('manual')">×</button><!-- remove file from video -->
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="v_code" class="col-sm-2 col-form-label">Code:</label>
+								<div class="element_file col-sm-2" ng-class="{'overwrite_file': editVideo.code && codeFile, 'new_file': !editVideo.code && codeFile, 'delete_file': fileRemove.code}">
+									<span class="glyphicon glyphicon-plus-sign darkgreen" ng-show="!editVideo.code && codeFile" style="margin-right:-5px"></span><!-- video has no file yet -->
+									<span class="glyphicon glyphicon-file" ng-class="editVideo.code ? 'darkgreen' : 'grey'"></span><!-- file present or not -->
+									<span class="glyphicon glyphicon-remove orange" role="button" ng-show="fileRemove.code" ng-click="toggleRemove('code')"></span><!-- undo remove file from video -->
+									<span class="glyphicon glyphicon-remove red" role="button" ng-show="codeFile" ng-click="clearUpload('#code')"></span><!-- undo file upload selection -->
+								</div>
+								<div class="col-sm-7">
+									<input type="file" ng-model="codeFile" name="v_code" id="code" ngf-select accept="*">
+								</div>
+								<div class="col-sm-1">
+									<button class="btn btn-danger element_btn" ng-show="editVideo.code && !codeFile && !fileRemove.code" ng-click="toggleRemove('code')">×</button><!-- remove file from video -->
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label">Playlists:</label>
+								<div class="col-sm-10 cmsList">
+									<ul>
+										<li ng-repeat="p in playlists track by p.id">
+											<input type="checkbox" id="pl_{{p.id}}" ng-name="pl_{{p.id}}" value="{{p.id}}" ng-checked="checkPlaylist(p.id)" />
+											<label role="button" ng-for="pl_{{p.id}}" ng-click="togglePlaylist(p)">{{p.name}}</label>
+										</li>
+									</ul>
+								</div>	
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label">Kits:</label>
+								<div class="col-sm-10 cmsList">
+									<ul>
+										<li ng-repeat="k in kitsList track by k.id">
+											<input type="checkbox" id="k_{{k.id}}" ng-name="k_{{p.id}}" value="{{k.id}}" ng-checked="checkKit(k.id)" />
+											<label role="button" ng-for="k_{{k.id}}" ng-click="toggleKit(k)">{{k.name}}</label>
+										</li>
+									</ul>
+								</div>	
+							</div>
+							<button class="btn btn-default white_bg pull-right" ng-click="saveVideo()" ng-disabled="video_editor.$invalid"><h3>SAVE</h3></button>
+						</fieldset>
+					</form>	
+				</div>
+			</div>
+
+			<!-- Playlists tab -->
+			<div class="tab_element" ng-show="isActive(3)">
+				
+				<!-- NEW PLAYLIST -->
+				<div id="new_playlist" class="video_filter cms_results" ng-controller="newPlaylistController">
+					<h3>New Playlist</h3>
+					<form id="new_pl" name="new_pl" novalidate>
+						<fieldset>
+							<div class="form-group row">
+								<label ng-for="pl_name" class="col-sm-2 col-form-label">Name:</label>
+								<div class="col-sm-10">
+									<input type="text" ng-name="pl_name" class="form-control" ng-model="newPlaylist.name" size="50" maxLength="100" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label ng-for="pl_description" class="col-sm-2 col-form-label">Description:</label>
+								<div class="col-sm-10">
+									<textarea ng-name="pl_description" class="form-control" rows="4" cols="50" ng-model="newPlaylist.description" maxLength="1000"></textarea>
+								</div>	
+							</div>
+							<button class="btn btn-default white_bg pull-right" ng-click="saveNewPlaylist()" ng-disabled="new_pl.$invalid"><h3>SAVE</h3></button>
+						</fieldset>
+					</form>
+				</div>
+				
+				<!-- LIST OF PLAYLISTS -->
+				<div id="cmsPlaylists" ng-controller="cmsPlaylistsController">
+					<h3>List of Playlists</h3>
+					<section class="cms_results">
+						<aside id="cmsPlaylist_{{pl.id}}" ng-repeat="pl in playlists">
+							<div class="row cms_element">
+								<div class="edit_link">
+									<a ng-href="" role="button" ng-click="selectPlaylist(pl.id)">
+										<div class="col-sm-10">
+												<h4>{{pl.name}}</h4>
+										</div>
+									</a>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-danger element_btn" ng-click="removePlaylist(pl.id)">&times;</button>
+								</div>
+							</div>
+							<hr class="partial_separator">
+						</aside>
+					</section>
+				</div>
+
+				<!-- EDITOR FOR SELECTED PLAYLIST -->
+				<div id="playlist_editor" ng-controller="playlistEditController">
+					<form name="playlist_editor" novalidate enctype="multipart/form-data">
+						<fieldset>
+							<div class="form-group row">
+								<label ng-for="v_name" class="col-sm-2 col-form-label">Name:</label>
+								<div class="col-sm-10">
+									<input type="text" ng-name="v_name" class="form-control" ng-model="editPlaylist.name" size="50" maxLength="100" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label ng-for="v_description" class="col-sm-2 col-form-label">Description:</label>
+								<div class="col-sm-10">
+									<textarea ng-name="v_description" class="form-control" rows="4" cols="50" ng-model="editPlaylist.description" maxLength="1000">
+								</textarea>
+								</div>	
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label">Videos:</label>
+								<div class="col-sm-10 cmsList">
+									<ul class="video_in_pl">
+										<li ng-repeat="v in videos track by v.id" ng-model="videos">
+											<img ng-src="{{'http://img.youtube.com/vi/' + v.yt_id + '/0.jpg'}}" alt="{{v.name}}" title="{{v.name}}" height="50"/>
+											<input type="checkbox" id="v_{{v.id}}" ng-name="v_{{v.id}}" value="{{v.id}}" ng-checked="checkVideo(v.id)" />
+											<label role="button" ng-for="v_{{v.id}}" ng-click="toggleVideo(v)">{{v.name}}</label>
+										</li>
+									</ul>
+								</div>	
+							</div>
+							<button class="btn btn-default white_bg pull-right" ng-click="savePlaylist()" ng-disabled="playlist_editor.$invalid"><h3>SAVE</h3></button>
+						</fieldset>
+					</form>	
+				</div>
+			</div>
+			
+			<!-- Courses tab -->
+			<div class="tab_element" ng-show="isActive(4)">
+				
+				<!-- NEW COURSE -->
+				<div id="new_course" class="video_filter cms_results" ng-controller="newCourseController">
+					<h3>New Course</h3>
+					<form id="new_course" name="new_course" novalidate>
+						<fieldset>
+							<div class="form-group row">
+								<label ng-for="course_name" class="col-sm-2 col-form-label">Name:</label>
+								<div class="col-sm-10">
+									<input type="text" ng-name="course_name" class="form-control" ng-model="newCourse.name" size="50" maxLength="100" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label ng-for="course_description" class="col-sm-2 col-form-label">Description:</label>
+								<div class="col-sm-10">
+									<textarea ng-name="course_description" class="form-control" rows="4" cols="50" ng-model="newCourse.description" maxLength="1000"></textarea>
+								</div>	
+							</div>
+							<button class="btn btn-default white_bg pull-right" ng-click="saveNewCourse()" ng-disabled="new_course.$invalid"><h3>SAVE</h3></button>
+						</fieldset>
+					</form>
+				</div>
+				
+				<!-- LIST OF COURSES -->
+				<div id="cmsCourses" ng-controller="cmsCoursesController">
+					<h3>List of Courses</h3>
+					<section class="cms_results">
+						<aside id="cmsCourse_{{course.id}}" ng-repeat="course in courses">
+							<div class="row cms_element">
+								<div class="edit_link">
+									<a ng-href="" role="button" ng-click="selectCourse(course.id)">
+										<div class="col-sm-10">
+												<h4>{{course.name}}</h4>
+										</div>
+									</a>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-danger element_btn" ng-click="removeCourse(course.id)">&times;</button>
+								</div>
+							</div>
+							<hr class="partial_separator">
+						</aside>
+					</section>
+				</div>
+
+				<!-- EDITOR FOR SELECTED COURSE -->
+				<div id="course_editor" ng-controller="courseEditController">
+					<form name="course_editor" novalidate enctype="multipart/form-data">
+						<fieldset>
+							<div class="form-group row">
+								<label ng-for="v_name" class="col-sm-2 col-form-label">Name:</label>
+								<div class="col-sm-10">
+									<input type="text" ng-name="v_name" class="form-control" ng-model="editCourse.name" size="50" maxLength="100" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label ng-for="v_description" class="col-sm-2 col-form-label">Description:</label>
+								<div class="col-sm-10">
+									<textarea ng-name="v_description" class="form-control" rows="4" cols="50" ng-model="editCourse.description" maxLength="1000">
+								</textarea>
+								</div>	
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label">Videos:</label>
+								<div class="col-sm-10 cmsList">
+									<ul class="video_in_course">
+										<li ng-repeat="v in videos track by v.id" ng-model="videos">
+											<img ng-src="{{'http://img.youtube.com/vi/' + v.yt_id + '/0.jpg'}}" alt="{{v.name}}" title="{{v.name}}" height="50"/>
+											<input type="checkbox" id="v_{{v.id}}" ng-name="v_{{v.id}}" value="{{v.id}}" ng-checked="checkVideo(v.id)" />
+											<label role="button" ng-for="v_{{v.id}}" ng-click="toggleVideo(v)">{{v.name}}</label>
+										</li>
+									</ul>
+								</div>	
+							</div>
+							<button class="btn btn-default white_bg pull-right" ng-click="saveCourse()" ng-disabled="course_editor.$invalid"><h3>SAVE</h3></button>
+						</fieldset>
+					</form>	
+				</div> 
+			</div>
+		</div>
+	</div>
+</div>

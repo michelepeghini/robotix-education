@@ -1,0 +1,101 @@
+<!doctype html>
+
+<html lang="en" ng-app="Robotix">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Tutorials, circuit's schemes and component's lists for robotics an automations projects with Arduino boards.">
+		<meta name="keywords" content="robotics, robotic, robot, automation, Arduino, workshop, tutorial, kit, electronic, circuit, board, open-source">
+		<meta name="author" content="Michele Peghini">
+		<title>Robotix Education</title>
+		<link href="images/robotix_icon.ico" rel="icon" type="image/x-icon" />
+
+		<!--<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/6FA905AE-CB32-704E-8CAA-BA073EEB1059/main.js" charset="UTF-8"></script>
+		<link rel="stylesheet" crossorigin="anonymous" href="http://gc.kis.v2.scr.kaspersky-labs.com/9501BEE370AB-AAC8-E407-23BC-EA509AF6/abn/main.css"/>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script><!-- jQuery -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><!-- Bootstrap.js -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><!-- Bootstrap CSS-->
+		<!-- Optional IE8 Support -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<link href="css/styles.css" rel="stylesheet" type="text/css"> <!-- Custom CSS -->
+		<script data-require="angular.js@1.4.2" data-semver="1.4.2" src="https://code.angularjs.org/1.4.2/angular.min.js"></script><!-- Angular -->
+		<script data-require="angular-route@1.4.2" data-semver="1.4.2" src="https://code.angularjs.org/1.4.2/angular-route.min.js"></script><!-- Angular - Routes -->
+		<script src="app.js"></script> <!-- Angular APP -->
+		<script src="routes.js"></script> <!-- Angular APP Routes -->
+		<!--<script src="js/ng-file-upload.js"></script> <!-- Angular APP File Upload module-->
+	</head>
+
+	<body class="page">
+		<!-- NAVIGATION -->
+		<nav class="navbar navbar-default navbar-fixed-top"  ng-controller="navigationController as navCtrl">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a ng-href="#/"><img id="logo" src="images/logo.png" alt="Robotix Workshops Logo" title="Robotix Workshops" height="80" width="80"></a>
+					<a class="navbar-brand" ng-href="#/"><h1>Robotix <span class="green">Education</span></h1></a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul id="navbar_links" class="nav navbar-nav">
+						<li><a href="#/videos">Videos</a></li>
+						<li><a href="#/software">Software</a></li>
+						<li><a href="#/kits">Kits</a></li>
+						<li><a href="#/courses">Courses</a></li>
+						<li><a href="#/udemy">Udemy Code</a></li>
+						<!--<li><a href="#/cart"><img src="images/cart_thumb.png" alt="shopping cart" title="shopping cart" height="25"/></a></li>-->
+						<li ng-show="!loggedIn"><button id="log_in_btn" class="btn btn-default" data-toggle="modal" data-target="#log_in">Log In</button></li>
+						<li ng-show="!loggedIn"><button id="sign_up_btn" class="btn btn-default" data-toggle="modal" data-target="#sign_up">Sign Up!</button></li>
+						<li ng-show="loggedIn"><button id="log_out_btn" class="btn btn-default" ng-click="logOut()">Log Out</button></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<!-- END OF NAVIGATION-->
+		
+		<!-- MODAL WINDOWS -->
+		<sign-up></sign-up>				
+		<log-in></log-in>
+		<!-- ENDO OF MODAL WINDOWS -->
+
+		<!-- PAGE CONTENT -->
+		<main ng-view></main>
+		<!-- END OF PAGE CONTENT-->
+
+
+		<!-- FOOTER -->
+		<footer class="container-fluid text-center">
+			<div class="row">
+				<!--<section id="resources" class="col-xs-12 col-md-9 col-sm-12 ">
+					<h5>RESOURCES:</h5>
+					<ul class="row">	
+						<li class="col-md-3 col-xs-12"><a href="#/about">About Us</a></li>
+						<li class="col-md-3 col-xs-12"><a href="#/contactUs">Contact Us</a></li>
+						<li class="col-md-3 col-xs-12"><a href="#/termsAndConditions">Terms &amp; Conditions</a></li>
+						<li class="col-md-3 col-xs-12"><a href="#/privacyPolicy">Privacy Policy</a></li>
+					</ul>
+				</section>-->
+				<section class="col-xs-3"></section>
+				<section id="partners" class="col-xs-6"> <!--col-md-3 col-sm-12 pull-right-->
+				
+					<h5>FIND US ON:</h5>
+					<ul class="row">
+						<li class="col-xs-12 col-sm-4 center-block"><a href="https://www.youtube.com/user/RobotixAu" target="_blank"><img class="social_thumb"  src="images/youtube_logo.png" alt="You Tube" title="You Tube logo"></a></li>
+						<li class="col-xs-12 col-sm-4 center-block"><a href="https://www.facebook.com/RobotixAu" target="_blank"><img class="social_thumb"  src="images/facebook_logo.png" alt="Facebook" title="Facebook logo"></a></li>
+						<li class="col-xs-12 col-sm-4 center-block"><a href="http://www.instructables.com/member/Robotix_au/" target="_blank" ><img class="social_thumb" src="images/instructables_logo_full.png" alt="Instructables" title="Instructables logo"></a></li>
+					</ul>
+				</section>			
+			</div>                  
+			<p id="copy"> Robotix Education &copy; 2012-2016.</p>
+		</footer>
+		<!-- END OF FOOTER -->
+
+	</body>
+</html>

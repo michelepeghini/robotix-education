@@ -1,0 +1,20 @@
+<!--COURSES VIEW -->
+
+<div class="container" ng-controller="coursesController">
+	<div class="heading">
+		<h2 >Courses</h2>
+	</div>		
+	<section class="software_wrapper" ng-repeat="c in courses">
+		<div class="row">
+			<div class="col-xs-12 col-sm-2">
+				<img height="150" ng-src="{{c.image}}" alt="{{c.title}}" title="{{c.title}}" class="img-responsive">
+			</div>
+			<div class="col-xs-12 col-sm-8">
+			<h3 class="center-block">{{c.title}}</h3>		
+			</div>
+			<div class="col-xs-12-col-sm-2">
+				<a ng-href="https://www.udemy.com/{{c.link}}" target="_blank"><button class="btn btn-default green_bg center-block">Enroll</button></a>
+			</div>
+		</div>
+	</section>
+</div>

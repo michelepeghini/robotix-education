@@ -1,0 +1,97 @@
+<!-- CMS ELEMENTS VIEW -->
+<div class="container">
+	<!-- NEW ELEMENT -->
+	<div id="new_element" class="video_filter cms_results" ng-controller="newElementController">
+	<h2>New Element</h2>
+		<form name="new_element" novalidate enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group row">
+					<label ng-for="new_el_name" class="col-sm-2 col-form-label">Name:</label>
+					<div class="col-sm-10">
+						<input id="newElementName" type="text" ng-name="new_el_name" class="form-control" ng-model="newElement.name" size="50" maxLength="100" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label ng-for="new_el_description" class="col-sm-2 col-form-label">Description:</label>
+					<div class="col-sm-10">
+						<textarea id="newElementDescription" ng-name="new_el_description" class="form-control" rows="4" cols="50" ng-model="newElement.description" maxLength="1000" ></textarea>
+					</div>	
+				</div>
+				<div class="form-group row">
+					<label ng-for="new_el_link" class="col-sm-2 col-form-label">Link:</label>
+					<div class="col-sm-10">
+						<select id="new_el_link" ng-name="new_el_link" class="form-control" ng-model="newElement.link" ng-options="l.link as l.name for l in links " required>
+							<option style="color:grey" value="">Section to link</option>
+						</select>
+					</div>
+				</div>
+				<button class="btn btn-default white_bg pull-right" ng-click="saveNewElement()" ng-disabled="new_element.$invalid"><h3>SAVE</h3></button>
+			</fieldset>
+		</form>	
+	</div>
+
+	<!-- LIST OF ELEMENTS -->
+	<div id="cmsElements" ng-controller="cmsElementsController">
+		<h3>List of Home Elements</h3>
+		<section class="cms_results">
+			<aside id="cmsElement_{{el.id}}" ng-repeat="el in elements">
+				<div class="row cms_element">
+					<div class="edit_link">
+						<a ng-href="" role="button" ng-click="selectElement(el.id)">
+							<div class="col-sm-2">
+								<img class="element_image" ng-src="{{'../../images/home/'+el.id+'/'+el.image}}" alt="{{el.name}}" title="{{el.name}}" height="80"/>
+							</div>
+							<div class="col-sm-8">
+									<h4>{{el.name}}</h4>
+							</div>
+						</a>
+					</div>
+					<div class="col-sm-2">
+						<button class="btn btn-danger element_btn" ng-click="removeElement(el.id)">&times;</button>
+					</div>
+				</div>
+				<hr class="partial_separator">
+			</aside>
+		</section>
+	</div>
+
+	<!-- EDITOR FOR SELECTED ELEMENT -->
+	<div id="element_editor" ng-controller="elementEditController">
+		<form name="element_editor" novalidate enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group row">
+					<label ng-for="el_name" class="col-sm-2 col-form-label">Name:</label>
+					<div class="col-sm-10">
+						<input type="text" ng-name="el_name" class="form-control" ng-model="editElement.name" size="50" maxLength="100" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label ng-for="el_description" class="col-sm-2 col-form-label">Description:</label>
+					<div class="col-sm-10">
+						<textarea ng-name="el_description" class="form-control" rows="4" cols="50" ng-model="editElement.description" maxLength="1000" required>
+					</textarea>
+					</div>	
+				</div>
+				<div class="form-group row">
+					<label for="el_image" class="col-sm-2 col-form-label">Image:</label>
+					<div class="element_file col-sm-2" ng-class="{'overwrite_file': editElement.image && imageFile, 'new_file': !editElement.image && imageFile, 'delete_file': fileRemove.image}">
+						<span class="glyphicon glyphicon-file" ng-class="editElement.image ? 'darkgreen' : 'grey'"></span><!-- image present or not  -->
+						<span class="glyphicon glyphicon-remove red" role="button" ng-show="imageFile" ng-click="clearUpload('#image')"></span><!-- undo image upload selection -->
+					</div>
+					<div class="col-sm-8">
+						<input type="file" ng-model="imageFile" name="el_image" id="image" ngf-select accept=".jpg, .png" size="30">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label ng-for="el_link" class="col-sm-2 col-form-label">Link:</label>
+					<div class="col-sm-10">
+						<select id="el_link" ng-name="new_el_link" class="form-control" ng-model="editElement.link" ng-options="l.link as l.name for l in links " required>
+							<option style="color:grey" value="">Section to link</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<button class="btn btn-default white_bg pull-right" ng-click="saveElement()" ng-disabled="element_editor.$invalid"><h3>SAVE</h3></button>
+		</form>	
+	</div>
+</div>

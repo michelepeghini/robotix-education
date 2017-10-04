@@ -1,0 +1,11 @@
+<!-- ABOUT US VIEW  -->
+
+<div class="container" ng-controller="AboutController as aboutCtrlr">	
+	<div class="info" ng-repeat="a in about">	
+		<div>
+			<h3>{{a.about_title}}</h3>
+			<img ng-src="{{'img/about_us/'+a.about_img}}"  alt="{{a.about_title}}" title="{{a.about_title}}"/>
+			<p>{{a.about_description}}</p>  
+		</div>
+	</div>	
+</div>

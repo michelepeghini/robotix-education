@@ -1,0 +1,207 @@
+<!-- CMS KITS VIEW -->
+<div class="container" ng-controller="kitTabsController">
+	<div class="kit_tabs">
+		<div class="row tabs_header">
+			<ul>
+				<li id="tab_1" class="float-left" ng-click="setActiveTab(1)"><h4>Kits</h4></li>
+				<li id="tab_2" class="float-left" ng-click="setActiveTab(2)"><h4>Components</h4></li>
+				<li id="tab_3" class="float-left" ng-click="setActiveTab(3)"><h4>Kit for videos</h4></li>
+			</ul>
+		</div>
+		<div class="tab_body clearfix">
+			<!-- TAB 1 - KITS -->
+			<div class="tab_element" ng-show="isActive(1)">
+				<!-- NEW KIT -->
+				<div id="new_kit" class="video_filter cms_results" ng-controller="newKitController">
+				<h3>New Kit</h3>
+					<form name="new_kit" novalidate enctype="multipart/form-data">
+						<fieldset>
+							<div class="form-group row">
+								<label ng-for="new_k_name" class="col-sm-2 col-form-label">Name:</label>
+								<div class="col-sm-10">
+									<input id="newKitName" type="text" ng-name="new_k_name" class="form-control" ng-model="newKit.name" size="50" maxLength="100" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label ng-for="new_k_description" class="col-sm-2 col-form-label">Description:</label>
+								<div class="col-sm-10">
+									<textarea id="newKitDescription" ng-name="new_k_description" class="form-control" rows="4" cols="50" ng-model="newKit.description" maxLength="1000" ></textarea>
+								</div>	
+							</div>
+							<div class="form-group row">
+								<label ng-for="new_k_price" class="col-sm-2 col-form-label">Price:</label>
+								<div class="input-group input-medium col-sm-10">
+									<input id="newKitPrice" type="number" min="0" step="0.10" ng-name="new_k_price" class="form-control" ng-model="newKit.price" size="50" maxLength="100" placeholder="0.00" required>
+									<span class="input-group-btn">AUD</span>
+								</div>
+							</div>
+							<button class="btn btn-default white_bg pull-right" ng-click="saveNewKit()" ng-disabled="new_kit.$invalid"><h3>SAVE</h3></button>
+						</fieldset>
+					</form>	
+				</div>
+			
+				<!-- LIST OF KITS -->
+				<div id="cmsKits" ng-controller="cmsKitsController">
+					<h3>List of Kits</h3>
+					<section class="cms_results">
+						<aside id="cmsKit_{{k.id}}" ng-repeat="k in kits">
+							<div class="row cms_element">
+								<div class="edit_link">
+									<a ng-href="" role="button" ng-click="selectKit(k.id)">
+										<div class="col-sm-2">
+											<img class="element_image" ng-src="{{'../../images/kits/'+k.id+'/'+k.image}}" alt="{{k.name}}" title="{{k.name}}" height="80"/>
+										</div>
+										<div class="col-sm-8">
+												<h4>{{k.name}}</h4>
+										</div>
+									</a>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-danger element_btn" ng-click="removeKit(k.id)">&times;</button>
+								</div>
+							</div>
+							<hr class="partial_separator">
+						</aside>
+					</section>
+				</div>
+
+				<!-- EDITOR FOR SELECTED KIT -->
+				<div id="kit_editor" ng-controller="kitEditController">
+					<form name="kit_editor" novalidate enctype="multipart/form-data">
+						<fieldset>
+							<div class="form-group row">
+								<label ng-for="k_name" class="col-sm-2 col-form-label">Name:</label>
+								<div class="col-sm-10">
+									<input type="text" ng-name="k_name" class="form-control" ng-model="editKit.name" size="50" maxLength="100" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label ng-for="k_description" class="col-sm-2 col-form-label">Description:</label>
+								<div class="col-sm-10">
+									<textarea ng-name="k_description" class="form-control" rows="4" cols="50" ng-model="editKit.description" maxLength="1000" required>
+								</textarea>
+								</div>	
+							</div>
+							<div class="form-group row">
+								<label for="k_image" class="col-sm-2 col-form-label">Image:</label>
+								<div class="element_file col-sm-2" ng-class="{'overwrite_file': editKit.image && imageFile, 'new_file': !editKit.image && imageFile, 'delete_file': fileRemove.image}">
+									<span class="glyphicon glyphicon-file" ng-class="editKit.image ? 'darkgreen' : 'grey'"></span><!-- image present or not -->
+									<span class="glyphicon glyphicon-remove red" role="button" ng-show="imageFile" ng-click="clearUpload('#image')"></span><!-- undo image upload selection -->
+								</div>
+								<div class="col-sm-8">
+									<input type="file" ng-model="imageFile" name="k_image" id="image" ngf-select accept=".jpg, .png" size="30">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label ng-for="k_price" class="col-sm-2 col-form-label">Price:</label>
+								<div class="input-group input-medium col-sm-10">
+									<input type="number" min="0" step="0.10" ng-name="k_price" class="form-control" ng-model="editKit.price" size="50" maxLength="100" required>
+									<span class="input-group-btn">AUD</span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label">Components:</label>
+								<div class="col-sm-10 cmsList">
+									<ul>
+										<li ng-repeat="c in kitService.editKit.componentsInKit track by c.id" id="comp_{{c.id}}">
+											<label ng-for="comp_qty_{{c.id}}" ng-class="{'part': c.qty > 0}">{{c.name}}</label>
+											<input type="number" min="0" step="1" id="comp_qty_{{c.id}}" ng-model="c.qty" class="pull-right" />
+										</li>
+									</ul>
+								</div>	
+							</div>
+						</fieldset>
+						<button class="btn btn-default white_bg pull-right" ng-click="saveKit()" ng-disabled="kit_editor.$invalid"><h3>SAVE</h3></button>
+					</form>	
+				</div>
+			</div>
+			
+			<!-- TAB 2 - COMPONENTS -->
+			<div class="tab_element" ng-show="isActive(2)">
+			
+				<!-- NEW COMPONENT -->
+				<div id="new_comp" class="video_filter cms_results" ng-controller="newCompController">
+					<h2>New Component</h2>
+					<form id="new_comp" name="new_comp" novalidate>
+						<fieldset>
+							<div class="form-group row">
+								<label ng-for="c_name" class="col-sm-2 col-form-label">Name:</label>
+								<div class="col-sm-8">
+									<input type="text" ng-name="c_name" class="form-control" ng-model="newComp.name" size="50" maxLength="100" required>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-default white_bg" ng-click="saveComp()" ng-disabled="new_comp.$invalid"><h3 style="margin-bottom:0">SAVE</h3></button>	
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				
+				<!-- LIST OF COMPONENTS -->
+				<h3>List of Components</h3>
+				<div id="cms_components" ng-controller="cmsComponentController">
+					<section class="cms_results">
+						<aside id="cmscomponents_{{c.id}}" ng-repeat="c in components">
+							<div class="row cms_element">
+								<div class="col-sm-10">
+									<p>{{c.name}}</p>
+								</div>								
+								<div class="col-sm-2">
+									<button class="btn btn-danger element_btn" ng-click="removeComponent(c.id)" >&times;</button>
+								</div>
+							</div>
+							<hr class="partial_separator">
+						</aside>
+					</section>
+				</div>
+			</div>
+			
+			<!-- TAB 3 - KIT FOR VIDEOS -->
+			<div class="tab_element" ng-show="isActive(3)">
+				
+				<!-- LIST OF KITS -->
+				<div id="cmsKfvs" ng-controller="cmsKfvController">
+					<h3>List of Kits</h3>
+					<section class="cms_results">
+						<aside id="cmsKfv_{{k.id}}" ng-repeat="k in kits">
+							<div class="row cms_element">
+								<div class="edit_link">
+									<a ng-href="" role="button" ng-click="selectKit(k.id)">
+										<div class="col-sm-2">
+											<img class="element_image" ng-src="{{'../../images/kits/'+k.id+'/'+k.image}}" alt="{{k.name}}" title="{{k.name}}" height="80"/>
+										</div>
+										<div class="col-sm-8">
+												<h4>{{k.name}}</h4>
+										</div>
+									</a>
+								</div>
+							</div>
+							<hr class="partial_separator">
+						</aside>
+					</section>
+				</div>
+				
+				<!-- EDITOR FOR SELECTED KIT -->
+				<div id="kfv_editor" ng-controller="kfvEditController">
+					<form name="kfv_editor" novalidate enctype="multipart/form-data">
+						<fieldset>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label">Videos:</label>
+								<div class="col-sm-10 cmsList">
+									<ul class="video_for_kit">
+										<li ng-repeat="v in videos track by v.id">
+											<img ng-src="{{'http://img.youtube.com/vi/' + v.yt_id + '/0.jpg'}}" alt="{{v.name}}" title="{{v.name}}" height="50"/>
+											<input type="checkbox" id="v_{{v.id}}" ng-name="v_{{v.id}}" value="{{v.id}}" ng-checked="checkVideo(v.id)"/>
+											<label role="button" ng-for="v_{{v.id}}" ng-click="toggleVideo(v)">{{v.name}}</label>
+										</li>
+									</ul>
+								</div>	
+							</div>
+							<button class="btn btn-default white_bg pull-right" ng-click="saveKfv()" ng-disabled="kfv_editor.$invalid"><h3>SAVE</h3></button>
+						</fieldset>
+					</form>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>				
