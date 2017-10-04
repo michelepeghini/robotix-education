@@ -9,3 +9,6 @@
 
 # htaccess for server redirect
 /robotix/admin/.htaccess
+
+#You Tube API Key
+/robotix/admin/youTubeAPIKey.json
