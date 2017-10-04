@@ -12,3 +12,6 @@
 
 #You Tube API Key
 /robotix/admin/youTubeAPIKey.json
+
+# database data
+/database/robotix-data.sql
