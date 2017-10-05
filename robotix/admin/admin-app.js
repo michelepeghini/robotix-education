@@ -104,7 +104,7 @@ app.factory('cmsVideosService', ['$http', function ($http) {
         method: 'GET',
 				url: 'youTubeAPIKey.json'
       });
-    ),
+    },
     getVideosContent: function () {
 			return $http({
 				method: 'GET',
