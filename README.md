@@ -91,10 +91,10 @@ This is the Admin section of the website, it consists of a Content Management Sy
 
 * **You Tube API:**
   * Admin can enter a `palylist_id` from his You Tube channel and have all Playlist and relative Videos data loaded.
-  * Titles and descriptions can be edited.
+  * `Name` and `Description` can be edited.
   * `X` button removes a video from playlist before DB storage.
   * `SAVE` button saves all videos and playlist to DB.
-  * `Title` and `Description` are stored in DB to allow differentiation of content between You Tube channel and website.
+  * `Name` and `Description` are stored in DB to allow differentiation of content between You Tube channel and website.
 
 ![You Tube API](/screenshots/admin-youtube.jpg "You Tube API")
 
@@ -104,7 +104,7 @@ This is the Admin section of the website, it consists of a Content Management Sy
   * **This section allows additional editing of individual video data**
   * `Manual` and `Code`: allows file upload, *green* icon indicates a file is present, current file can be deleted with `X` button 
   * `Playlists`: shows all available playlists and allows Admin to add/remove video from any playlist. *Green* playlist indicates video is in that playlist.
-  * `Kits`: shows all available kits and allows Admin to add/remove video association with any kit. *Green* kit indicates video is in that kit.
+  * `Kits`: shows all available kits and allows Admin to add/remove video association with any kit. *Green* kit indicates video's circuitcan be built with that kit.
   
 ![CMS for Videos](/screenshots/admin-videos.jpg "CMS for Videos")
 
@@ -121,7 +121,9 @@ This is the Admin section of the website, it consists of a Content Management Sy
 * **CMS for Kits:** 
   * `New Kit`: allows creation of new kit, with `Name`, `Description` and `Price` only. A kit must be stored to DB and get an ID before specifying any additional attributes, due to dependencies in DB's associative tables.
   * `Image`: Allows image upload, `red` border indicates that a new file has been selected for upload and that the old one will be overwritten. The `X` near the file icon clears the new file upload.
-  * `Components`: allows to select which electronic components are part of the kit and in what quantity. New components can be created in the *Components* tab, not shown here.
+  * `Components`: allows to select which electronic components are part of the kit and in what quantity. 
+  * `Components` tab: not shown here. Allows creation of new components. 
+  * `Kit for Videos` tab: not shown here. Allows association of a kit with videos picked form a list of all video. Same operation available for video, just reversed.
   
 ![CMS for Kits](/screenshots/admin-kit.jpg "")
 
